@@ -35,64 +35,97 @@ except ImportError:
 import math
 from collections import Counter
 
-def average_width(font):
-    return (int)(1 + sum(g.width for g in font.glyphs()) / sum(1 for _ in font.glyphs()))
+class GlyphScaler(object): # pylint: disable=too-few-public-methods
+    def __init__(self, cell_width):
+        self.cell_width = cell_width
 
-def most_common_width(font):
-    width, _ = Counter(g.width for g in font.glyphs()).most_common(1)[0]
-    return width
+    @staticmethod
+    def set_width(glyph, width):
+        delta = width - glyph.width
+        glyph.left_side_bearing += delta / 2
+        glyph.right_side_bearing += delta - glyph.left_side_bearing
+        glyph.width = width
 
-def set_width(glyph, avg_width, target_width, allow_wide_chars):
-    if allow_wide_chars:
-        new_width_in_cells = int(math.ceil(0.75 * float(glyph.width) / avg_width))
-        new_width = new_width_in_cells * target_width
+class BasicGlyphScaler(GlyphScaler): # pylint: disable=too-few-public-methods
+    def __init__(self, cell_width):
+        GlyphScaler.__init__(self, cell_width)
+
+    def scale(self, glyph):
+        GlyphScaler.set_width(glyph, self.cell_width)
+
+class AllowWideCharsGlyphScaler(GlyphScaler): # pylint: disable=too-few-public-methods
+    def __init__(self, cell_width, avg_width):
+        """Construct a scaler that allocates multiple cells for wide glyphs."""
+        GlyphScaler.__init__(self, cell_width)
+        self.avg_width = avg_width
+
+    def scale(self, glyph):
+        new_width_in_cells = int(math.ceil(0.75 * float(glyph.width) / self.avg_width))
         if new_width_in_cells > 1:
-            print("{} is {} cells wide ({} -> {})".format(glyph.glyphname, new_width_in_cells, target_width, glyph.width))
-    else:
-        new_width = target_width
-    delta = new_width - glyph.width
-    glyph.left_side_bearing += delta / 2
-    glyph.right_side_bearing += delta - glyph.left_side_bearing
-    glyph.width = new_width
+            print("{} is {} cells wide ({} -> {})".format(glyph.glyphname, new_width_in_cells, self.cell_width, glyph.width))
+        GlyphScaler.set_width(glyph, new_width_in_cells * self.cell_width)
 
-def set_widths(font, target_width, allow_wide_chars = True):
-    """
-    Adjust width of glyphs in FONT to match TARGET_WIDTH.
-    If ALLOW_WIDE_CHARS, let wide characters occupy more than one cell.
-    """
-    print("Setting width to {}".format(target_width))
+class FontScaler(object):
+    def __init__(self, path):
+        self.font = fontforge.open(path) # Prints a few warnings
 
-    counter = Counter()
-    avg_width = average_width(font)
-    for idx, glyph in enumerate(font.glyphs()):
-        if idx % 1000 == 0:
-            print(idx)
-        set_width(glyph, avg_width, target_width, allow_wide_chars)
-        counter[glyph.width] += 1
+    @staticmethod
+    def average_width(font):
+        """
+        Compute the average character width in FONT.
+        Useful to compare a character to others in a font.
+        """
+        return int(1 + sum(g.width for g in font.glyphs()) / sum(1 for _ in font.glyphs()))
 
-    print(sorted(counter.items()))
+    @staticmethod
+    def most_common_width(font):
+        """
+        Find out the most common character width in FONT.
+        Useful to determine the width of a monospace font.
+        """
+        [(width, _)] = Counter(g.width for g in font.glyphs()).most_common(1) # pylint: disable=unbalanced-tuple-unpacking
+        return width
 
-def load_font(path):
-    return fontforge.open(path) # Prints a few warnings
+    def scale_glyphs(self, scaler):
+        """
+        Adjust width of glyphs in using SCALER.
+        """
+        print("> Setting width to {}".format(scaler.cell_width))
 
-def rename(font, oldname, newname):
-    font.fontname = newname
-    font.fullname = newname
-    font.familyname = newname
-    font.sfnt_names = [(lng, key, (val if newname in val
-                                   else val.replace(oldname, newname)))
-                       for (lng, key, val) in font.sfnt_names]
-    # print("\n".join("{}: {}".format(attr, getattr(font,attr)) for attr in dir(font)))
+        counter = Counter()
+        for glyph in self.font.glyphs():
+            scaler.scale(glyph)
+            counter[glyph.width] += 1
+
+        print("> Final width distribution: {}".format(",".join(map(str, sorted(counter.items())))))
+
+    @staticmethod
+    def rename(font, newname):
+        oldname = font.fontname
+        font.fontname = newname
+        font.fullname = newname
+        font.familyname = newname
+        font.sfnt_names = [(lng, key, (val if newname in val
+                                       else val.replace(oldname, newname)))
+                           for (lng, key, val) in font.sfnt_names]
+        # print("\n".join("{}: {}".format(attr, getattr(font,attr)) for attr in dir(font)))
+
+    def write(self, file_name):
+        """
+        Rename and save the font to FILE_NAME.
+        """
+        FontScaler.rename(self.font, self.font.fontname + "Monospace")
+        self.font.generate(file_name)
 
 def main():
-    font = load_font("symbola.ttf")
-    reference = load_font("consolas.ttf")
+    fscaler = FontScaler("symbola.ttf")
+    reference = fontforge.open("consolas.ttf")
 
-    set_widths(font, most_common_width(reference), False)
-    rename(font, "Symbola", "SymbolaMonospace")
+    gscaler = BasicGlyphScaler(FontScaler.most_common_width(reference))
+    # gscaler = AllowWideCharsGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
 
-    font.generate("symbola-monospace.ttf")
-    print("Done")
+    fscaler.scale_glyphs(gscaler)
+    fscaler.write("symbola-monospace-2.ttf")
 
 def plot_widths(glyphs):
     # Putting imports in this order prevents a circular import
