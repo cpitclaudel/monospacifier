@@ -110,12 +110,12 @@ class FontScaler(object):
                            for (lng, key, val) in font.sfnt_names]
         # print("\n".join("{}: {}".format(attr, getattr(font,attr)) for attr in dir(font)))
 
-    def write(self, file_name):
+    def write(self, name):
         """
-        Rename and save the font to FILE_NAME.
+        Rename and save the font to NAME.ttf.
         """
-        FontScaler.rename(self.font, self.font.fontname + "Monospace")
-        self.font.generate(file_name)
+        FontScaler.rename(self.font, name)
+        self.font.generate(name + ".ttf")
 
 def main():
     fscaler = FontScaler("symbola.ttf")
@@ -125,7 +125,7 @@ def main():
     # gscaler = AllowWideCharsGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
 
     fscaler.scale_glyphs(gscaler)
-    fscaler.write("symbola-monospace-2.ttf")
+    fscaler.write("SymbolaMonospace")
 
 def plot_widths(glyphs):
     # Putting imports in this order prevents a circular import
