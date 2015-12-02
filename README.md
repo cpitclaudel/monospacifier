@@ -1,6 +1,6 @@
 # monospacifier.py
 
-A great way to increase the unicode coverage of your favourite programming font. Live demo:
+A great way to increase the unicode coverage of your favourite programming font. Live demo: (using a variable-width fallback font *vs.* using the same fallback font after monospacification)
 
 ![default vs monospacified](demo/symbola-loop.gif)
 
