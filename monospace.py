@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+# pylint: disable=too-few-public-methods
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,7 +40,7 @@ except ImportError:
     print("  sudo make install")
     raise
 
-class GlyphScaler(object): # pylint: disable=too-few-public-methods
+class GlyphScaler(object):
     def __init__(self, cell_width):
         self.cell_width = cell_width
 
@@ -50,7 +51,7 @@ class GlyphScaler(object): # pylint: disable=too-few-public-methods
         glyph.right_side_bearing += delta - glyph.left_side_bearing
         glyph.width = width
 
-class BasicGlyphScaler(GlyphScaler): # pylint: disable=too-few-public-methods
+class BasicGlyphScaler(GlyphScaler):
     """
     A GlyphScaler that adjust glyph bounding boxes so that their widths are
     all equal to the base cell width.
@@ -62,7 +63,7 @@ class BasicGlyphScaler(GlyphScaler): # pylint: disable=too-few-public-methods
     def scale(self, glyph):
         GlyphScaler.set_width(glyph, self.cell_width)
 
-class AllowWideCharsGlyphScaler(GlyphScaler): # pylint: disable=too-few-public-methods
+class AllowWideCharsGlyphScaler(GlyphScaler):
     """
     A GlyphScaler that adjusts glyph bounding boxes so that their widths are
     multiples of the base cell width. Which multiple is chosen depends on the
@@ -84,20 +85,21 @@ class StretchingGlyphScaler(GlyphScaler):
     """
     A GlyphScaler that adjusts glyph bounding boxes so that their widths are all
     equal to the base cell width. Unlike the basic scaler, this one also scales
-    the glyphs themselves slightly to equate the median glyph width with the
-    base cell width.
+    the glyphs themselves horizontally by a small amount, in proportion of their
+    distance to the average glyph width.
     """
 
-    def __init__(self, cell_width, median_width):
+    def __init__(self, cell_width, avg_width):
+        """Construct an instance based on the target CELL_WIDTH and the source AVG_WIDTH."""
         GlyphScaler.__init__(self, cell_width)
-        self.median_width = median_width
-        self.scale_factor = cell_width / median_width
-        print(cell_width, median_width)
+        self.avg_width = avg_width
 
     def scale(self, glyph):
-        cells_after_scaling = glyph.width * self.scale_factor / self.cell_width
-        scale = self.scale_factor / (1.05 ** max(0, cells_after_scaling - 1))
-        matrix = psMat.scale(scale)
+        source_cells_width = glyph.width / self.avg_width
+        scale = 1.0 / (1.15 ** max(0, source_cells_width - 1))
+        if glyph.unicode == 10239:
+            print("\n\n====\n" + "\n".join("{}: {}".format(attr, str(getattr(glyph, attr))) for attr in dir(glyph)))
+        matrix = psMat.scale(scale, 1)
         glyph.transform(matrix)
         GlyphScaler.set_width(glyph, self.cell_width)
 
@@ -172,7 +174,7 @@ def main():
 
     # gscaler = BasicGlyphScaler(FontScaler.most_common_width(reference))
     # gscaler = AllowWideCharsGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
-    gscaler = StretchingGlyphScaler(FontScaler.most_common_width(reference), FontScaler.median_width(fscaler.font))
+    gscaler = StretchingGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
 
     fscaler.scale_glyphs(gscaler)
     fscaler.write("SymbolaMonospace")
