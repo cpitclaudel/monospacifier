@@ -6,23 +6,34 @@ A great way to increase the unicode coverage of your favourite programming font.
 
 ## Pre-monospacified fonts (monospace font with good unicode coverage)
 
-Instead of running this program, you can download a pre-generated fallback font. I use [Symbola](http://users.teilar.gr/~g1951d/), which is "free for any use". Unfortunately, since the widths of the monospace and fallback fonts must match, the results won't be perfect unless you use one of the monospace fonts below:
+Instead of running this program, you can download a pre-generated fallback font. I use [Symbola](http://users.teilar.gr/~g1951d/), which is "free for any use". Unfortunately, since the widths of the monospace and fallback fonts must match, the results won't be perfect unless you use one of the monospace fonts listed below as your main programming font.
+
+### Download
+
+Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, download *SymbolaMonospace for Consolas*.
 
 * [SymbolaMonospace](fonts/SymbolaMonospace-Consolas.ttf) for **Consolas** (width: 1126)
 
 If your favorite monospace font is not in this list, please let me know.
 
-### Usage
+### Installation
+
+Install the font:
+
+* On Windows put it in `C:\Windows\Font`.
+* On Debian-inspired systems put it in `~/.fonts` and run `fc-cache`.
+
+### Configuration
 
 #### Emacs
 
-Add the following snippet to your `.emacs`:
+Add the following snippet to your `.emacs`, then restart:
 
 ``` elisp
 (set-fontset-font t 'unicode (font-spec :name "SymbolaMonospace") nil 'append)
 ```
 
-#### Others
+#### Other editors
 
 Please submit recipes for other editors or operating systems!
 
