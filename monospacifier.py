@@ -203,13 +203,15 @@ def main():
         fscaler = FontScaler(fnt)
         reference = fontforge.open(ref)
 
-        gscaler = StretchingGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
+        width = FontScaler.most_common_width(reference)
+        gscaler = StretchingGlyphScaler(width, FontScaler.average_width(fscaler.font))
         fscaler.scale_glyphs(gscaler)
 
-        fscaler.rename(reference)
-
         output = os.path.join(args.save_to, "{}-monospacified-for-{}".format(fname(fnt), fname(ref)))
+        print("* [{} Monospace]({}) for **{}** (width: {})".format(fname(fnt), output, fname(ref), width))
+        fscaler.rename(reference)
         fscaler.write(output)
+        fscaler.font.close()
 
     # plot_widths(fscaler.font.glyphs())
     # gscaler = BasicGlyphScaler(FontScaler.most_common_width(reference))
