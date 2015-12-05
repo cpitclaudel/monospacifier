@@ -10,11 +10,18 @@ Instead of running this program, you can download a pre-generated fallback font.
 
 ### Download
 
-Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, download *SymbolaMonospace for Consolas*.
+Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, and you want to use Symbola for symbols, download *Symbola Monospace for Consolas*.
 
-* [SymbolaMonospace](fonts/SymbolaMonospace-Consolas.ttf) for **Consolas** (width: 1126)
+* [Symbola Monospace](./fonts/Symbola-monospacified-for-Consolas) for **Consolas** (width: 1126)
+* [TexGyrePagellaMath Monospace](./fonts/TexGyrePagellaMath-monospacified-for-Consolas) for **Consolas** (width: 1126)
+* [TexGyreScholaMath Monospace](./fonts/TexGyreScholaMath-monospacified-for-Consolas) for **Consolas** (width: 1126)
+* [TexGyreTermesMath Monospace](./fonts/TexGyreTermesMath-monospacified-for-Consolas) for **Consolas** (width: 1126)
+* [Symbola Monospace](./fonts/Symbola-monospacified-for-DejaVuSansMono) for **DejaVuSansMono** (width: 1233)
+* [TexGyrePagellaMath Monospace](./fonts/TexGyrePagellaMath-monospacified-for-DejaVuSansMono) for **DejaVuSansMono** (width: 123
+* [TexGyreScholaMath Monospace](./fonts/TexGyreScholaMath-monospacified-for-DejaVuSansMono) for **DejaVuSansMono** (width: 1233)
+* [TexGyreTermesMath Monospace](./fonts/TexGyreTermesMath-monospacified-for-DejaVuSansMono) for **DejaVuSansMono** (width: 1233)
 
-If your favorite monospace font is not in this list, please let me know.
+If your favorite combination of fonts is not in this list, please let me know.
 
 ### Installation
 
@@ -27,10 +34,10 @@ Install the font:
 
 #### Emacs
 
-Add the following snippet to your `.emacs`, then restart:
+Add the following snippet to your `.emacs` (replacing `Symbola` and `Consolas` as appropriate), then restart:
 
 ``` elisp
-(set-fontset-font t 'unicode (font-spec :name "SymbolaMonospace") nil 'append)
+(set-fontset-font t 'unicode (font-spec :name "Symbola monospacified for Consolas") nil 'append)
 ```
 
 #### Other editors
