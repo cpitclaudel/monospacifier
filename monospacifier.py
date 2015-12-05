@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-This program creates a monospace font from a variable-width font, using fontforge.
-"""
-
 # $ fc-list | grep -i symbola
 # /usr/share/fonts/truetype/ttf-ancient-scripts/Symbola605.ttf: Symbola:style=Regular
 
+"""Convert a variable-width font to monospace."""
+
 from __future__ import division
 
+import argparse
+import itertools
 import math
+import os
+import sys
+from cStringIO import StringIO
 from collections import Counter
 
 try:
@@ -61,7 +64,8 @@ class BasicGlyphScaler(GlyphScaler):
         GlyphScaler.__init__(self, cell_width)
 
     def scale(self, glyph):
-        GlyphScaler.set_width(glyph, self.cell_width)
+        if glyph.width > 0:
+            GlyphScaler.set_width(glyph, self.cell_width)
 
 class AllowWideCharsGlyphScaler(GlyphScaler):
     """
@@ -76,10 +80,12 @@ class AllowWideCharsGlyphScaler(GlyphScaler):
         self.avg_width = avg_width
 
     def scale(self, glyph):
-        new_width_in_cells = int(math.ceil(0.75 * glyph.width / self.avg_width))
-        if new_width_in_cells > 1:
-            print("{} is {} cells wide ({} -> {})".format(glyph.glyphname, new_width_in_cells, self.cell_width, glyph.width))
-        GlyphScaler.set_width(glyph, new_width_in_cells * self.cell_width)
+        if glyph.width > 0:
+            new_width_in_cells = int(math.ceil(0.75 * glyph.width / self.avg_width))
+            # if new_width_in_cells > 1:
+            #     print("{} is {} cells wide ({} -> {})".format(
+            #         glyph.glyphname, new_width_in_cells, self.cell_width, glyph.width))
+            GlyphScaler.set_width(glyph, new_width_in_cells * self.cell_width)
 
 class StretchingGlyphScaler(GlyphScaler):
     """
@@ -95,17 +101,19 @@ class StretchingGlyphScaler(GlyphScaler):
         self.avg_width = avg_width
 
     def scale(self, glyph):
-        source_cells_width = glyph.width / self.avg_width
-        scale = 1.0 / (1.15 ** max(0, source_cells_width - 1))
-        if glyph.unicode == 10239:
-            print("\n\n====\n" + "\n".join("{}: {}".format(attr, str(getattr(glyph, attr))) for attr in dir(glyph)))
-        matrix = psMat.scale(scale, 1)
-        glyph.transform(matrix)
-        GlyphScaler.set_width(glyph, self.cell_width)
+        if glyph.width > 0:
+            source_cells_width = glyph.width / self.avg_width
+            scale = 1.0 / (1.15 ** max(0, source_cells_width - 1))
+            # if glyph.unicode == 10239:
+            #     print("\n\n====\n" + "\n".join("{}: {}".format(attr, str(getattr(glyph, attr))) for attr in dir(glyph)))
+            matrix = psMat.scale(scale, 1)
+            glyph.transform(matrix)
+            GlyphScaler.set_width(glyph, self.cell_width)
 
 class FontScaler(object):
     def __init__(self, path):
         self.font = fontforge.open(path) # Prints a few warnings
+        self.renamed = False
 
     @staticmethod
     def average_width(font):
@@ -146,48 +154,66 @@ class FontScaler(object):
             scaler.scale(glyph)
             counter[glyph.width] += 1
 
-        print("> Final width distribution: {}".format("\n".join(map(str, counter.most_common(10)))))
+        print("> Final width distribution: {}".format(", ".join(map(str, counter.most_common(10)))))
 
-    @staticmethod
-    def rename(font, newname):
-        oldname = font.fontname
-        font.fontname = newname
-        font.fullname = newname
-        font.familyname = newname
-        font.sfnt_names = [(lng, key, (val if newname in val
-                                       else val.replace(oldname, newname)))
-                           for (lng, key, val) in font.sfnt_names]
+    def rename(self, reference):
+        self.font.fontname = "{}-monospacified-for-{}".format(self.font.fontname, reference.fontname)
+        self.font.familyname = "{} monospacified for {}".format(self.font.familyname, reference.familyname)
+        self.font.fullname = "{} monospacified for {}".format(self.font.fullname, reference.fullname)
+        # font.sfnt_names = [(lng, key, (val if newname in val
+        #                                else val.replace(oldname, newname)))
+        #                    for (lng, key, val) in font.sfnt_names]
         # print("\n".join("{}: {}".format(attr, getattr(font,attr)) for attr in dir(font)))
 
     def write(self, name):
         """
-        Rename and save the font to NAME.ttf.
+        Save the font to NAME.
         """
-        FontScaler.rename(self.font, name)
-        self.font.generate(name + ".ttf")
-
-def main():
-    fscaler = FontScaler("symbola.ttf")
-    reference = fontforge.open("consolas.ttf")
-
-    # plot_widths(fscaler.font.glyphs())
-
-    # gscaler = BasicGlyphScaler(FontScaler.most_common_width(reference))
-    # gscaler = AllowWideCharsGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
-    gscaler = StretchingGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
-
-    fscaler.scale_glyphs(gscaler)
-    fscaler.write("SymbolaMonospace")
+        name += ".ttf"
+        self.font.generate(name)
+        print("> Wrote {}".format(name))
 
 def plot_widths(glyphs):
-    # Putting imports in this order prevents a circular import
-    import matplotlib
+    # pylint: disable=unused-variable
+    import matplotlib # Putting imports in this order prevents a circular import
     import matplotlib.cbook
     from matplotlib import pyplot
 
     widths = [glyph.width for glyph in glyphs]
     pyplot.hist(widths, bins=400)
     pyplot.show()
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--references', required="True", nargs='+',
+                        help="Reference monospace fonts. " +
+                        "The metrics (character width, ...) of the newly created monospace fonts are inherited from these.")
+    parser.add_argument('--inputs', required="True", nargs='+',
+                        help="Variable-width fonts to monospacify.")
+    parser.add_argument('--save-to', default=".", help="Where to save the newly generated monospace fonts. Defaults to current directory.")
+    return parser.parse_args()
+
+def fname(path):
+    return os.path.splitext(os.path.basename(path))[0]
+
+def main():
+    args = parse_arguments()
+
+    for ref, fnt in itertools.product(args.references, args.inputs):
+        fscaler = FontScaler(fnt)
+        reference = fontforge.open(ref)
+
+        gscaler = StretchingGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
+        fscaler.scale_glyphs(gscaler)
+
+        fscaler.rename(reference)
+
+        output = os.path.join(args.save_to, "{}-monospacified-for-{}".format(fname(fnt), fname(ref)))
+        fscaler.write(output)
+
+    # plot_widths(fscaler.font.glyphs())
+    # gscaler = BasicGlyphScaler(FontScaler.most_common_width(reference))
+    # gscaler = AllowWideCharsGlyphScaler(FontScaler.most_common_width(reference), FontScaler.average_width(fscaler.font))
 
 if __name__ == '__main__':
     main()
