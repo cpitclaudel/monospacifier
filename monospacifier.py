@@ -259,7 +259,7 @@ def main():
 
     try:
         from tabulate import tabulate
-        print(tabulate(table, headers=[u'Programming font', u'Monospacified fallback font'], tablefmt='pipe'))
+        print(tabulate(table, headers=[u'Programming font', u'Monospacified fallback fonts'], tablefmt='pipe'))
     except ImportError:
         print("!!! tabulate package not available")
 
