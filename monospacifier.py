@@ -29,7 +29,6 @@ from __future__ import division
 
 import argparse
 from collections import Counter
-import itertools
 import math
 import os
 import re
@@ -175,55 +174,48 @@ def plot_widths(glyphs):
 def fname(path):
     return os.path.splitext(os.path.basename(path))[0]
 
-def make_monospace(ref, fnt, save_to):
-    fallback = fontforge.open(fnt)
-    reference = fontforge.open(ref)
-    width = FontScaler.most_common_width(reference)
-
+def make_monospace(reference, fallback, gscaler, save_to):
     fontname = "{}_monospacified_for_{}".format(cleanup_font_name(fallback.fontname), cleanup_font_name(reference.fontname))
     familyname = "{} monospacified for {}".format(cleanup_font_name(fallback.familyname), cleanup_font_name(reference.familyname))
     fullname = "{} monospacified for {}".format(cleanup_font_name(fallback.fullname), cleanup_font_name(reference.fullname))
 
-    output = os.path.join(save_to, fontname + ".ttf")
-    print("> * [{}]({}) monospacified for **{}** (width: {})".format(fallback.familyname, output, reference.familyname, width))
-
-    shutil.copy(fnt, output)
-    fscaler = FontScaler(output)
+    destination = os.path.join(save_to, fontname + ".ttf")
+    shutil.copy(fallback.path, destination)
+    fscaler = FontScaler(destination)
     fscaler.font.sfnt_names = [] # Get rid of 'Prefered Name' etc.
     fscaler.font.fontname = fontname
     fscaler.font.familyname = familyname
     fscaler.font.fullname = fullname
 
     fscaler.font.em = reference.em # Adjust em size (number of internal units per em)
-    gscaler = StretchingGlyphScaler(width, FontScaler.average_width(fscaler.font))
     fscaler.scale_glyphs(gscaler)
-    fscaler.write(output)
-    return output
+    fscaler.write(destination)
+
+    return destination
 
 def cleanup_font_name(name):
     return re.sub('(.monospacified.for.*|-.*)', '', name)
 
-def merge_fonts(ref, fnt, save_to):
-    reference = fontforge.open(ref)
-    fallback = fontforge.open(fnt)
-
+def merge_fonts(reference, fallback, save_to):
     fontname = "{}_extended_with_{}".format(cleanup_font_name(reference.fontname), cleanup_font_name(fallback.fontname))
     familyname = "{} extended with {}".format(cleanup_font_name(reference.familyname), cleanup_font_name(fallback.familyname))
     fullname = "{} extended with {}".format(cleanup_font_name(reference.fullname), cleanup_font_name(fallback.fullname))
 
-    output = os.path.join(save_to, fontname + ".ttf")
-    # print("> * [{}]({}) extended with **{}**".format(cleanup_font_name(reference.familyname), output, cleanup_font_name(fallback.familyname)))
+    destination = os.path.join(save_to, fontname + ".ttf")
+    link = "[{}]({}) extended with **{}**".format(cleanup_font_name(reference.familyname), destination,
+                                                  cleanup_font_name(fallback.familyname))
 
-    shutil.copy(ref, output)
-    merged = fontforge.open(output)
+    shutil.copy(reference.path, destination)
+    merged = fontforge.open(destination)
     merged.sfnt_names = []
     merged.fontname = fontname
     merged.familyname = familyname
     merged.fullname = fullname
 
-    merged.mergeFonts(fnt)
-    merged.generate(output)
-    return output
+    merged.mergeFonts(fallback.path)
+    merged.generate(destination)
+
+    return destination
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -238,13 +230,38 @@ def parse_arguments():
                         help="Whether to create copies of the reference font, extended with monospacified glyphs of the inputs.")
     return parser.parse_args()
 
+def process_fonts(ref_paths, fnt_paths, save_to, merge):
+    for ref in ref_paths:
+        reference = fontforge.open(ref)
+        ref_width = FontScaler.most_common_width(reference)
+        print(">>> For reference font {}:".format(reference.familyname))
+        for fnt in fnt_paths:
+            fallback = fontforge.open(fnt)
+            print(">>> - Monospacifying {}".format(fallback.familyname))
+            gscaler = StretchingGlyphScaler(ref_width, FontScaler.average_width(fallback))
+            path = make_monospace(reference, fallback, gscaler, save_to)
+            if merge:
+                monospacified = fontforge.open(path)
+                print(">>> - Merging with {}".format(monospacified.familyname))
+                path = merge_fonts(reference, monospacified, save_to)
+            yield (reference.familyname, fallback.familyname, path)
+
 def main():
     args = parse_arguments()
+    # del args.inputs[1:]
+    # del args.references[1:]
+    results = list(process_fonts(args.references, args.inputs, args.save_to, args.merge))
 
-    for ref, fnt in itertools.product(args.references, args.inputs):
-        output = make_monospace(ref, fnt, args.save_to)
-        if args.merge:
-            merge_fonts(ref, output, args.save_to)
+    tabdata = {}
+    for ref, fnt, ttf in results:
+        tabdata.setdefault(u"**{}**".format(ref), []).append(u"[{}]({})".format(fnt, ttf))
+    table = [(header, u", ".join(items)) for header, items in sorted(tabdata.items())]
+
+    try:
+        from tabulate import tabulate
+        print(tabulate(table, headers=[u'Programming font', u'Monospacified fallback font'], tablefmt='pipe'))
+    except ImportError:
+        print("!!! tabulate package not available")
 
 if __name__ == '__main__':
     main()
