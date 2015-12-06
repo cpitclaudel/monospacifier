@@ -6,9 +6,7 @@ A great way to increase the Unicode coverage of your favorite programming font. 
 
 ## Pre-monospacified fonts (monospace fonts with good Unicode coverage)
 
-Instead of running this program on your favorite pair of fonts (one good monospace font, plus one variable-width font with good Unicode support), you can download a pre-generated monospacified font with good Unicode coverage and use it as a fallback.
-
-<small>Note that, since the widths of the monospace and fallback fonts must match, the results won't be perfect unless you use one of the monospace fonts listed below as your main programming font.</small>
+Instead of running this program, you can download a pre-generated monospace font with good Unicode coverage, adjusted to your favourite programming font, and use it as a fallback.
 
 Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, and you want to use Symbola for symbols, download [*Symbola monospacified for Consolas*](./fonts/Symbola_monospacified_for_Consolas.ttf).
 
