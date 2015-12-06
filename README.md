@@ -35,10 +35,26 @@ Choose the right font from this list, based on your main programming font. For e
 
 * [Symbola](./fonts/Symbola_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
 * [Symbola](./fonts/Symbola_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
-* [XITS](./fonts/XITS_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
-* [XITS](./fonts/XITS_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [STIX Math](./fonts/STIXMath_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [STIX Math](./fonts/STIXMath_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [XITS Math](./fonts/XITSMath_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [XITS Math](./fonts/XITSMath_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [Asana Math](./fonts/Asana_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [Asana Math](./fonts/Asana_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [Latin Modern Math](./fonts/LatinModernMath_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [Latin Modern Math](./fonts/LatinModernMath_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
 * [TeX Gyre Schola Math](./fonts/TeXGyreScholaMath_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
 * [TeX Gyre Schola Math](./fonts/TeXGyreScholaMath_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [DejaVu Sans](./fonts/DejaVuSans_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [DejaVu Sans](./fonts/DejaVuSans_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [DejaVu Sans Condensed](./fonts/DejaVuSansCondensed_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [DejaVu Sans Condensed](./fonts/DejaVuSansCondensed_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [DejaVu Serif](./fonts/DejaVuSerif_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [DejaVu Serif](./fonts/DejaVuSerif_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [DejaVu Serif Condensed](./fonts/DejaVuSerifCondensed_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [DejaVu Serif Condensed](./fonts/DejaVuSerifCondensed_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [FreeSerif](./fonts/FreeSerif_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [FreeSerif](./fonts/FreeSerif_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
 
 If your favorite combination of fonts is not in this list, please let me know.
 

@@ -21,19 +21,19 @@
 """Convert a variable-width font to monospace, optionally merging it with an
 existing monospace font to extend its unicode coverage."""
 
-# Techincal note: two cycles of (open, modify, save, close) cause a segfault.
+# Technical note: two cycles of (open, modify, save, close) cause a segfault.
 # On the other hand, copying a font and reading, modifying, and overwriting
 # the copy works.
 
 from __future__ import division
 
 import argparse
+from collections import Counter
 import itertools
 import math
 import os
-import shutil
 import re
-from collections import Counter
+import shutil
 
 try:
     import fontforge
@@ -235,7 +235,7 @@ def parse_arguments():
     parser.add_argument('--save-to', default=".",
                         help="Where to save the newly generated monospace fonts. Defaults to current directory.")
     parser.add_argument('--merge', action='store_const', const=True, default=False,
-                        help="Whether to create a copy of the reference, including monospacified glyphs from the inputs.")
+                        help="Whether to create copies of the reference font, extended with monospacified glyphs of the inputs.")
     return parser.parse_args()
 
 def main():
