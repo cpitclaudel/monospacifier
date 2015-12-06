@@ -31,16 +31,14 @@ Instead of running this program on your favorite pair of fonts (one good monospa
 
 <small>Note that, since the widths of the monospace and fallback fonts must match, the results won't be perfect unless you use one of the monospace fonts listed below as your main programming font.</small>
 
-Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, and you want to use Symbola for symbols, download *Symbola Monospace for Consolas*.
+Choose the right font from this list, based on your main programming font. For example, if you use Consolas for programming, and you want to use Symbola for symbols, download *Symbola monospacified for Consolas*.
 
-* [Symbola](./fonts/Symbola-monospacified-for-Consolas) monospacified for **Consolas** (width: 1126)
-* [TexGyrePagellaMath](./fonts/TexGyrePagellaMath-monospacified-for-Consolas) monospacified for **Consolas** (width: 1126)
-* [TexGyreScholaMath](./fonts/TexGyreScholaMath-monospacified-for-Consolas) monospacified for **Consolas** (width: 1126)
-* [TexGyreTermesMath](./fonts/TexGyreTermesMath-monospacified-for-Consolas) monospacified for **Consolas** (width: 1126)
-* [Symbola](./fonts/Symbola-monospacified-for-DejaVuSansMono) monospacified for **DejaVuSansMono** (width: 1233)
-* [TexGyrePagellaMath](./fonts/TexGyrePagellaMath-monospacified-for-DejaVuSansMono) monospacified for **DejaVuSansMono** (width: 1233)
-* [TexGyreScholaMath](./fonts/TexGyreScholaMath-monospacified-for-DejaVuSansMono) monospacified for **DejaVuSansMono** (width: 1233)
-* [TexGyreTermesMath](./fonts/TexGyreTermesMath-monospacified-for-DejaVuSansMono) monospacified for **DejaVuSansMono** (width: 1233)
+* [Symbola](./fonts/Symbola_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [Symbola](./fonts/Symbola_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [XITS](./fonts/XITS_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [XITS](./fonts/XITS_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
+* [TeX Gyre Schola Math](./fonts/TeXGyreScholaMath_monospacified_for_Consolas.ttf) monospacified for **Consolas** (width: 1126)
+* [TeX Gyre Schola Math](./fonts/TeXGyreScholaMath_monospacified_for_DejaVuSansMono.ttf) monospacified for **DejaVu Sans Mono** (width: 1233)
 
 If your favorite combination of fonts is not in this list, please let me know.
 
@@ -51,7 +49,7 @@ Install the font:
 * On Windows put it in `C:\Windows\Font`.
 * On Debian-inspired systems put it in `~/.fonts` and run `fc-cache`.
 
-### Configuration
+### Fallback font configuration
 
 #### Emacs
 
@@ -75,4 +73,4 @@ Please submit recipes for other editors or operating systems!
 
 ![inconsistent fallbacks](demo/original.png) ![consistent fallback](demo/symbola.png) ![monospacified fallback](demo/symbola-monospacified.png)
 
-Monospace font + default fallbacks — Monospace font + Symbola — Monospace font + Monospacified Symbola
+Monospace font + default fallbacks — Monospace font + original Symbola — Monospace font + Monospacified Symbola
