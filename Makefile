@@ -3,7 +3,7 @@ CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
-ASANA=/usr/share/fonts/truetype/asana-math/Asana-Math.otf
+ASANA=/home/clement/.fonts/maths/Asana-Math-Tr.otf
 SYMBOLA=/usr/share/fonts/truetype/ttf-ancient-scripts/Symbola605.ttf
 LATINMODERN=/home/clement/.fonts/maths/latinmodern-math.otf
 TEXGYRESCHOLA=/home/clement/.fonts/maths/texgyreschola-math.otf
