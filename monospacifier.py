@@ -115,6 +115,23 @@ class StretchingGlyphScaler(GlyphScaler):
             GlyphScaler.set_width(glyph, self.cell_width)
 
 class FontScaler(object):
+    # METRICS = ["ascent", "capHeight", "descent", "hhea_ascent", "hhea_ascent_add",
+    #            "hhea_descent", "hhea_descent_add", "hhea_linegap", "os2_capheight",
+    #            "os2_strikeypos", "os2_strikeysize", "os2_subxoff", "os2_subxsize",
+    #            "os2_subyoff", "os2_subysize", "os2_supxoff", "os2_supxsize", "os2_supyoff",
+    #            "os2_supysize", "os2_typoascent", "os2_typoascent_add", "os2_typodescent",
+    #            "os2_typodescent_add", "os2_typolinegap", "os2_width", "os2_winascent",
+    #            "os2_winascent_add", "os2_windescent", "os2_windescent_add", "os2_xheight",
+    #            "vhea_linegap", "xHeight"]
+    METRICS = ["ascent", "descent", "hhea_ascent", "hhea_ascent_add",
+               "hhea_descent", "hhea_descent_add", "hhea_linegap", "os2_capheight",
+               "os2_strikeypos", "os2_strikeysize", "os2_subxoff", "os2_subxsize",
+               "os2_subyoff", "os2_subysize", "os2_supxoff", "os2_supxsize", "os2_supyoff",
+               "os2_supysize", "os2_typoascent", "os2_typoascent_add", "os2_typodescent",
+               "os2_typodescent_add", "os2_typolinegap", "os2_width", "os2_winascent",
+               "os2_winascent_add", "os2_windescent", "os2_windescent_add", "os2_xheight",
+               "vhea_linegap"]
+
     def __init__(self, path):
         self.font = fontforge.open(path) # Prints a few warnings
         self.renamed = False
@@ -155,6 +172,10 @@ class FontScaler(object):
             # counter[glyph.width] += 1
         # print("> Final width distribution: {}".format(", ".join(map(str, counter.most_common(10)))))
 
+    def copy_metrics(self, reference):
+        for metric in FontScaler.METRICS:
+            setattr(self.font, metric, getattr(reference, metric))
+
     def write(self, name):
         """
         Save font to NAME.
@@ -174,7 +195,7 @@ def plot_widths(glyphs):
 def fname(path):
     return os.path.splitext(os.path.basename(path))[0]
 
-def make_monospace(reference, fallback, gscaler, save_to):
+def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
     fontname = "{}_monospacified_for_{}".format(cleanup_font_name(fallback.fontname), cleanup_font_name(reference.fontname))
     familyname = "{} monospacified for {}".format(cleanup_font_name(fallback.familyname), cleanup_font_name(reference.familyname))
     fullname = "{} monospacified for {}".format(cleanup_font_name(fallback.fullname), cleanup_font_name(reference.fullname))
@@ -189,6 +210,8 @@ def make_monospace(reference, fallback, gscaler, save_to):
 
     fscaler.font.em = reference.em # Adjust em size (number of internal units per em)
     fscaler.scale_glyphs(gscaler)
+    if copy_metrics:
+        fscaler.copy_metrics(reference)
     fscaler.write(destination)
 
     return destination
@@ -228,9 +251,11 @@ def parse_arguments():
                         help="Where to save the newly generated monospace fonts. Defaults to current directory.")
     parser.add_argument('--merge', action='store_const', const=True, default=False,
                         help="Whether to create copies of the reference font, extended with monospacified glyphs of the inputs.")
+    parser.add_argument('--copy-metrics', action='store_const', const=True, default=False,
+                        help="Whether to apply the metrics of the reference font to the new font.")
     return parser.parse_args()
 
-def process_fonts(ref_paths, fnt_paths, save_to, merge):
+def process_fonts(ref_paths, fnt_paths, save_to, merge, copy_metrics):
     for ref in ref_paths:
         reference = fontforge.open(ref)
         ref_width = FontScaler.most_common_width(reference)
@@ -239,7 +264,7 @@ def process_fonts(ref_paths, fnt_paths, save_to, merge):
             fallback = fontforge.open(fnt)
             print(">>> - Monospacifying {}".format(fallback.familyname))
             gscaler = StretchingGlyphScaler(ref_width, FontScaler.average_width(fallback))
-            path = make_monospace(reference, fallback, gscaler, save_to)
+            path = make_monospace(reference, fallback, gscaler, save_to, copy_metrics)
             if merge:
                 monospacified = fontforge.open(path)
                 print(">>> - Merging with {}".format(monospacified.familyname))
@@ -250,7 +275,7 @@ def main():
     args = parse_arguments()
     # del args.inputs[1:]
     # del args.references[1:]
-    results = list(process_fonts(args.references, args.inputs, args.save_to, args.merge))
+    results = list(process_fonts(args.references, args.inputs, args.save_to, args.merge, args.copy_metrics))
 
     tabdata = {}
     for ref, fnt, ttf in results:

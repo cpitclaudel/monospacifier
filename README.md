@@ -1,14 +1,10 @@
 # monospacifier.py
 
-A great way to increase the Unicode coverage of your favorite programming font.
+*A great way to increase the Unicode coverage of your favorite programming font.*
+
+`monospacifier.py` adjusts every character of your favorite variable-width font to match a reference monospace font. The result is a good fallback font for characters not covered by the reference: the result is a font setup with good Unicode coverage, without breaking indentation.
 
 ![default vs monospacified](demo/symbola-loop.gif)
-
-## Details
-
-`monospacifier.py` adjusts every character of your favourite variable-pitch font to match the width of a reference monospace font. The result is an good fallback font to use for characters not covered by the reference font. The final combination (original monospace font + monospacified font as fallback) has good Unicode coverage, and does not break indentation.
-
-`monospacifier.py` includes multiple scaling algorithms. They are all pretty basic; this approach won't work well for anything but a fallback font. The most advanced one (demoed) sets the bounding box of each glyph appropriately, and slightly compresses wide characters to not spill too much from that bounding box. This preserves ratios (so ↦ and ⟼ are still distinguishable), while ensuring that each character occupies one "screen cell". Of course, two consecutive wide symbols will overlap.
 
 ## Pre-monospacified fonts (monospace fonts with good Unicode coverage)
 
@@ -56,3 +52,14 @@ Please submit recipes for other editors or operating systems!
 ![inconsistent fallbacks](demo/original.png) ![consistent fallback](demo/symbola.png) ![monospacified fallback](demo/symbola-monospacified.png)
 
 Monospace font + default fallbacks — Monospace font + original Symbola — Monospace font + Monospacified Symbola
+
+## Usage
+
+## Details
+
+* For help, run `./monospacifier.py -h`
+* For examples of use, see the Makefile (I use it to generate the files listed here)
+
+`monospacifier.py` includes multiple scaling algorithms (only one is exposed on the CLI). They are all rather basic, so don;t expect this program to create anything except a decent fallback font.
+
+The most advanced algorithm (demoed) sets the bounding box of each glyph appropriately (to match the most common width in the monospace font), and slightly compresses wide characters to reduce bleeding (wide glyphs will overlap with neighboring characters), while preserving distinctions between long and short glyphs (so ↦ and ⟼ are still distinguishable). Then (conditional on the `--copy-metrics` flag), `monospacifier.py` adjusts the metrics of the newly created font to match those of the reference (this fixes a number of issues that I don't understand well, in particular with `hhea_descent` and `os2_typodescent` metrics; if you have a clue about this, please do get in touch by opening an issue).

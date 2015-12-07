@@ -1,0 +1,122 @@
+# activeLayer
+# bitmapSizes
+# changed
+# cidcopyright
+# cidfamilyname
+# cidfontname
+# cidfullname
+# cidordering
+# cidregistry
+# cidsubfont
+# cidsubfontcnt
+# cidsubfontnames
+# cidsupplement
+# cidversion
+# cidweight
+# comment
+# copyright
+# cvt
+# default_base_filename
+# design_size
+# em
+# encoding
+# familyname
+# fondname
+# fontlog
+# fontname
+# fullname
+# gasp
+# gasp_version
+# gpos_lookups
+# gsub_lookups
+# guide
+# hasvmetrics
+# head_optimized_for_cleartype
+# horizontalBaseline
+# is_cid
+# is_quadratic
+# iscid
+# isnew
+# italicangle
+# layer_cnt
+# layers
+# loadState
+# macstyle
+# markClasses
+# math
+# maxp_FDEFs
+# maxp_IDEFs
+# maxp_maxStackDepth
+# maxp_storageCnt
+# maxp_twilightPtCnt
+# maxp_zones
+# multilayer
+# onlybitmaps
+# os2_codepages
+# os2_family_class
+# os2_fstype
+# os2_panose
+# os2_unicoderanges
+# os2_use_typo_metrics
+# os2_vendor
+# os2_version
+# os2_weight
+# os2_weight_width_slope_only
+# path
+# persistant
+# persistent
+# private
+# privateState
+# selection
+# sfd_path
+# sfntRevision
+# sfnt_names
+# size_feature
+# strokedfont
+# strokewidth
+# temporary
+# texparameters
+# uniqueid
+# upos
+# userdata
+# uwidth
+# version
+# verticalBaseline
+# vertical_origin
+# weight
+# woffMajor
+# woffMetadata
+# woffMinor
+# xuid
+ascent
+capHeight
+descent
+hhea_ascent
+hhea_ascent_add
+hhea_descent
+hhea_descent_add
+hhea_linegap
+os2_capheight
+os2_strikeypos
+os2_strikeysize
+os2_subxoff
+os2_subxsize
+os2_subyoff
+os2_subysize
+os2_supxoff
+os2_supxsize
+os2_supyoff
+os2_supysize
+os2_typoascent
+os2_typoascent_add
+os2_typodescent
+os2_typodescent_add
+os2_typolinegap
+os2_width
+os2_winascent
+os2_winascent_add
+os2_windescent
+os2_windescent_add
+os2_xheight
+vhea_linegap
+xHeight

@@ -3,7 +3,7 @@ CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
-ASANA=/home/clement/.fonts/maths/Asana-Math-Tr.otf
+ASANA=/usr/share/fonts/truetype/asana-math/Asana-Math.otf
 SYMBOLA=/usr/share/fonts/truetype/ttf-ancient-scripts/Symbola605.ttf
 LATINMODERN=/home/clement/.fonts/maths/latinmodern-math.otf
 TEXGYRESCHOLA=/home/clement/.fonts/maths/texgyreschola-math.otf
@@ -19,13 +19,15 @@ ttf: monospacifier.py
 	./monospacifier.py \
 		--references ./sources/references/* \
 		--inputs ./sources/inputs/* \
-		--save-to ./fonts 2>&1 # --merge
+		--save-to ./fonts --copy-metrics # 2>&1 # --merge
 
 prepare:
 	echo "References"
+	rm ./sources/references/*
 	cp $(CONSOLAS)				./sources/references/Consolas.ttf
 	cp $(DEJAVU)				./sources/references/DejaVuSansMono.ttf
 	echo "Inputs"
+	rm ./sources/inputs/*
 	cp $(XITS)					./sources/inputs/XITSMath.otf
 	cp $(STIX)					./sources/inputs/STIXMath.otf
 	cp $(ASANA)					./sources/inputs/AsanaMath.otf
