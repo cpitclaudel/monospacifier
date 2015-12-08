@@ -4,7 +4,7 @@ CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
 ASANA=/usr/share/fonts/truetype/asana-math/Asana-Math.otf
-SYMBOLA=/usr/share/fonts/truetype/ttf-ancient-scripts/Symbola605.ttf
+SYMBOLA=/home/clement/.fonts/maths/Symbola-hint.ttf
 LATINMODERN=/home/clement/.fonts/maths/latinmodern-math.otf
 TEXGYRESCHOLA=/home/clement/.fonts/maths/texgyreschola-math.otf
 

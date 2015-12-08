@@ -115,14 +115,6 @@ class StretchingGlyphScaler(GlyphScaler):
             GlyphScaler.set_width(glyph, self.cell_width)
 
 class FontScaler(object):
-    # METRICS = ["ascent", "capHeight", "descent", "hhea_ascent", "hhea_ascent_add",
-    #            "hhea_descent", "hhea_descent_add", "hhea_linegap", "os2_capheight",
-    #            "os2_strikeypos", "os2_strikeysize", "os2_subxoff", "os2_subxsize",
-    #            "os2_subyoff", "os2_subysize", "os2_supxoff", "os2_supxsize", "os2_supyoff",
-    #            "os2_supysize", "os2_typoascent", "os2_typoascent_add", "os2_typodescent",
-    #            "os2_typodescent_add", "os2_typolinegap", "os2_width", "os2_winascent",
-    #            "os2_winascent_add", "os2_windescent", "os2_windescent_add", "os2_xheight",
-    #            "vhea_linegap", "xHeight"]
     METRICS = ["ascent", "descent", "hhea_ascent", "hhea_ascent_add",
                "hhea_descent", "hhea_descent_add", "hhea_linegap", "os2_capheight",
                "os2_strikeypos", "os2_strikeysize", "os2_subxoff", "os2_subxsize",
