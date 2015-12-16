@@ -1,5 +1,6 @@
 DEJAVU=/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf
 CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
+INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
@@ -26,6 +27,7 @@ prepare:
 	rm ./sources/references/*
 	cp $(CONSOLAS)				./sources/references/Consolas.ttf
 	cp $(DEJAVU)				./sources/references/DejaVuSansMono.ttf
+	cp $(INCONSOLATA)			./sources/references/DejaVuSansMono.ttf
 	echo "Inputs"
 	rm ./sources/inputs/*
 	cp $(XITS)					./sources/inputs/XITSMath.otf
