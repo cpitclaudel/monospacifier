@@ -1,6 +1,8 @@
 DEJAVU=/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf
 CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
+INCONSOLATA_LGC=/home/clement/.fonts/monospace/inconsolata-lgc/Inconsolata LGC for Powerline.ttf
+TERMINUS=/home/clement/.fonts/monospace/terminus/TerminusTTF-4.39.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
@@ -25,22 +27,24 @@ ttf: monospacifier.py
 prepare:
 	echo "References"
 	rm ./sources/references/*
-	cp $(CONSOLAS)				./sources/references/Consolas.ttf
-	cp $(DEJAVU)				./sources/references/DejaVuSansMono.ttf
-	cp $(INCONSOLATA)			./sources/references/DejaVuSansMono.ttf
+	cp "$(CONSOLAS)"				./sources/references/Consolas.ttf
+	cp "$(DEJAVU)"					./sources/references/DejaVuSansMono.ttf
+	cp "$(INCONSOLATA)"				./sources/references/Inconsolata.ttf
+	cp "$(INCONSOLATA_LGC)"			./sources/references/InconsolataLGCForPowerline.ttf
+	cp "$(TERMINUS)"				./sources/references/Terminus.ttf
 	echo "Inputs"
-	rm ./sources/inputs/*
-	cp $(XITS)					./sources/inputs/XITSMath.otf
-	cp $(STIX)					./sources/inputs/STIXMath.otf
-	cp $(ASANA)					./sources/inputs/AsanaMath.otf
-	cp $(SYMBOLA)				./sources/inputs/Symbola.ttf
-	cp $(LATINMODERN)			./sources/inputs/LatinModernMath.otf
-	cp $(TEXGYRESCHOLA)			./sources/inputs/TexGyreScholaMath.otf
-	cp $(FREESERIF)				./sources/inputs/FreeSerif.ttf
-#   cp $(DEJAVUSANS)			./sources/inputs/DejaVuSans.ttf
-#   cp $(DEJAVUSANSCONDENSED)	./sources/inputs/DejaVuSansCondensed.ttf
-#   cp $(DEJAVUSERIF)			./sources/inputs/DejaVuSerif.ttf
-#   cp $(DEJAVUSERIFCONDENSED)	./sources/inputs/DejaVuSerifCondensed.ttf
+	rm								./sources/inputs/*
+	cp "$(XITS)"					./sources/inputs/XITSMath.otf
+	cp "$(STIX)"					./sources/inputs/STIXMath.otf
+	cp "$(ASANA)"					./sources/inputs/AsanaMath.otf
+	cp "$(SYMBOLA)"					./sources/inputs/Symbola.ttf
+	cp "$(LATINMODERN)"				./sources/inputs/LatinModernMath.otf
+	cp "$(TEXGYRESCHOLA)"			./sources/inputs/TexGyreScholaMath.otf
+	cp "$(FREESERIF)"				./sources/inputs/FreeSerif.ttf
+#   cp "$(DEJAVUSANS)"				./sources/inputs/DejaVuSans.ttf
+#   cp "$(DEJAVUSANSCONDENSED)"		./sources/inputs/DejaVuSansCondensed.ttf
+#   cp "$(DEJAVUSERIF)"				./sources/inputs/DejaVuSerif.ttf
+#   cp "$(DEJAVUSERIFCONDENSED)"	./sources/inputs/DejaVuSerifCondensed.ttf
 
 install:
 	rm ~/.fonts/monospacified/*.ttf
