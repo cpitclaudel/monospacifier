@@ -19,7 +19,7 @@
 # /usr/share/fonts/truetype/ttf-ancient-scripts/Symbola605.ttf: Symbola:style=Regular
 
 """Convert a variable-width font to monospace, optionally merging it with an
-existing monospace font to extend its unicode coverage."""
+existing monospace font to extend its Unicode coverage."""
 
 # Technical note: two cycles of (open, modify, save, close) cause a segfault.
 # On the other hand, copying a font and reading, modifying, and overwriting
