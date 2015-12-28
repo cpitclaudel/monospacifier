@@ -217,9 +217,6 @@ def merge_fonts(reference, fallback, save_to):
     fullname = "{} extended with {}".format(cleanup_font_name(reference.fullname), cleanup_font_name(fallback.fullname))
 
     destination = os.path.join(save_to, fontname + ".ttf")
-    link = "[{}]({}) extended with **{}**".format(cleanup_font_name(reference.familyname), destination,
-                                                  cleanup_font_name(fallback.familyname))
-
     shutil.copy(reference.path, destination)
     merged = fontforge.open(destination)
     merged.sfnt_names = []
@@ -271,7 +268,7 @@ def main():
 
     tabdata = {}
     for ref, fnt, ttf in results:
-        tabdata.setdefault(u"**{}**".format(ref), []).append(u"[{}]({})".format(fnt, ttf))
+        tabdata.setdefault(u"**{}**".format(ref), []).append(u"[{}]({}?raw=true)".format(fnt, ttf))
     table = [(header, u", ".join(items)) for header, items in sorted(tabdata.items())]
 
     try:

@@ -1,4 +1,5 @@
 DEJAVU=/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf
+UBUNTU=/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf
 CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
 INCONSOLATA_LGC=/home/clement/.fonts/monospace/inconsolata-lgc/Inconsolata LGC for Powerline.ttf
@@ -28,6 +29,7 @@ prepare:
 	echo "References"
 	rm ./sources/references/*
 	cp "$(CONSOLAS)"				./sources/references/Consolas.ttf
+	cp "$(UBUNTU)"					./sources/references/UbuntuMono.ttf
 	cp "$(DEJAVU)"					./sources/references/DejaVuSansMono.ttf
 	cp "$(INCONSOLATA)"				./sources/references/Inconsolata.ttf
 	cp "$(INCONSOLATA_LGC)"			./sources/references/InconsolataLGCForPowerline.ttf
