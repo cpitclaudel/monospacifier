@@ -37,15 +37,23 @@ If your favorite combination is not available, please let me know.
 Add the following snippet to your `.emacs` (replacing font names as appropriate), then restart:
 
 ``` elisp
+(set-fontset-font t 'unicode (font-spec :name "<monospace font>"))
 (set-fontset-font t 'unicode (font-spec :name "<variable-width font> monospacified for <monospace font>") nil 'append)
 ```
 
 Here are two examples:
 
 ``` elisp
+(set-fontset-font t 'unicode (font-spec :name "Consolas"))
 (set-fontset-font t 'unicode (font-spec :name "Symbola monospacified for Consolas") nil 'append)
+```
+
+```elisp
+(set-fontset-font t 'unicode (font-spec :name "DejaVu Sans Mono"))
 (set-fontset-font t 'unicode (font-spec :name "Asana Math monospacified for DejaVu Sans Mono") nil 'append)
 ```
+
+(If this doesn't work, try again with `"fontset-standard"` or `"fontset-startup"` instead of `t` in the examples)
 
 #### Other editors
 
