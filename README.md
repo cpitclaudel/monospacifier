@@ -72,6 +72,6 @@ Monospace font + default fallbacks — Monospace font + original Symbola — Mon
 * For help, run `./monospacifier.py -h`
 * For examples of use, see the Makefile (I use it to generate the files listed here)
 
-`monospacifier.py` includes multiple scaling algorithms (only one is exposed on the CLI). They are all rather basic, so don;t expect this program to create anything except a decent fallback font.
+`monospacifier.py` includes multiple scaling algorithms (only one is exposed on the CLI). They are all rather basic, so don't expect this program to create anything except a decent fallback font.
 
 The most advanced algorithm (demoed) sets the bounding box of each glyph appropriately (to match the most common width in the monospace font), and slightly compresses wide characters to reduce bleeding (wide glyphs will overlap with neighboring characters), while preserving distinctions between long and short glyphs (so ↦ and ⟼ are still distinguishable). Then (conditional on the `--copy-metrics` flag), `monospacifier.py` adjusts the metrics of the newly created font to match those of the reference (this fixes a number of issues that I don't understand well, in particular with `hhea_descent` and `os2_typodescent` metrics; if you have a clue about this, please do get in touch by opening an issue).

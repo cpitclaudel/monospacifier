@@ -166,7 +166,8 @@ class FontScaler(object):
 
     def copy_metrics(self, reference):
         for metric in FontScaler.METRICS:
-            setattr(self.font, metric, getattr(reference, metric))
+            if hasattr(reference, metric):
+                setattr(self.font, metric, getattr(reference, metric))
 
     def write(self, name):
         """
