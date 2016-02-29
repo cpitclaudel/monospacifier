@@ -39,7 +39,7 @@ try:
     import psMat
 except ImportError:
     print("This program requires FontForge's python bindings:")
-    print("  hub checkout fontforge/fontforge")
+    print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
     print("  ./bootstrap")
     print("  ./configure --enable-pyextension")
