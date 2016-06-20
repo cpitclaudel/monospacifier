@@ -4,6 +4,7 @@ CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
 INCONSOLATA_LGC=/home/clement/.fonts/monospace/inconsolata-lgc/Inconsolata LGC for Powerline.ttf
 TERMINUS=/home/clement/.fonts/monospace/terminus/TerminusTTF-4.39.ttf
+MONONOKI=/home/clement/.fonts/monospace/mononoki/mononoki-Regular.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
@@ -34,6 +35,7 @@ prepare:
 	cp "$(INCONSOLATA)"				./sources/references/Inconsolata.ttf
 	cp "$(INCONSOLATA_LGC)"			./sources/references/InconsolataLGCForPowerline.ttf
 	cp "$(TERMINUS)"				./sources/references/Terminus.ttf
+	cp "$(MONONOKI)"				./sources/references/Mononoki.ttf
 	echo "Inputs"
 	rm								./sources/inputs/*
 	cp "$(XITS)"					./sources/inputs/XITSMath.otf

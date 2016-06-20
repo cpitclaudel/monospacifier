@@ -42,7 +42,7 @@ except ImportError:
     print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
     print("  ./bootstrap")
-    print("  ./configure --enable-pyextension")
+    print("  ./configure")
     print("  make -j8")
     print("  sudo make install")
     raise
