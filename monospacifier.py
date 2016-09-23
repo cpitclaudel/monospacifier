@@ -45,6 +45,7 @@ except ImportError:
     print("  ./configure")
     print("  make -j8")
     print("  sudo make install")
+    print("  sudo ldconfig")
     raise
 
 class GlyphScaler(object):
@@ -193,6 +194,7 @@ def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
     familyname = "{} monospacified for {}".format(cleanup_font_name(fallback.familyname), cleanup_font_name(reference.familyname))
     fullname = "{} monospacified for {}".format(cleanup_font_name(fallback.fullname), cleanup_font_name(reference.fullname))
 
+    print "!!!", fallback.fontname, "!!!", reference.fontname, "!!!"
     destination = os.path.join(save_to, fontname + ".ttf")
     shutil.copy(fallback.path, destination)
     fscaler = FontScaler(destination)
@@ -210,7 +212,7 @@ def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
     return destination
 
 def cleanup_font_name(name):
-    return re.sub('(.monospacified.for.*|-.*)', '', name)
+    return re.sub('(.monospacified.for.*|-Regular|-Math)', '', name)
 
 def merge_fonts(reference, fallback, save_to):
     fontname = "{}_extended_with_{}".format(cleanup_font_name(reference.fontname), cleanup_font_name(fallback.fontname))

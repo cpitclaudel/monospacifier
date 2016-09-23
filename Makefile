@@ -1,4 +1,4 @@
-DEJAVU=/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf
+DEJAVU=/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
 UBUNTU=/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf
 CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
@@ -7,6 +7,7 @@ TERMINUS=/home/clement/.fonts/monospace/terminus/TerminusTTF-4.39.ttf
 MONONOKI=/home/clement/.fonts/monospace/mononoki/mononoki-Regular.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
+XITS_BOLD=/home/clement/.fonts/maths/xits-mathbold.otf
 STIX=/home/clement/.fonts/maths/STIXMath-Regular.otf
 ASANA=/usr/share/fonts/truetype/asana-math/Asana-Math.otf
 SYMBOLA=/home/clement/.fonts/maths/Symbola-hint.ttf
@@ -39,6 +40,7 @@ prepare:
 	echo "Inputs"
 	rm								./sources/inputs/*
 	cp "$(XITS)"					./sources/inputs/XITSMath.otf
+	cp "$(XITS_BOLD)"				./sources/inputs/XITSMath-B.otf
 	cp "$(STIX)"					./sources/inputs/STIXMath.otf
 	cp "$(ASANA)"					./sources/inputs/AsanaMath.otf
 	cp "$(SYMBOLA)"					./sources/inputs/Symbola.ttf

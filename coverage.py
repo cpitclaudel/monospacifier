@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Find if a glyph is covered by a given font."""
+"""Find if a glyph is covered by a given font.
+Example use: ./coverage.py --glyphs ω --fonts `find ~/.fonts -name '*.*tf'`"""
 
 import argparse
 from itertools import izip, repeat
@@ -27,10 +28,10 @@ try:
     import psMat
 except ImportError:
     print("This program requires FontForge's python bindings:")
-    print("  hub checkout fontforge/fontforge")
+    print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
     print("  ./bootstrap")
-    print("  ./configure --enable-pyextension")
+    print("  ./configure")
     print("  make -j8")
     print("  sudo make install")
     raise
@@ -74,7 +75,11 @@ def collect_font_info(glyphs, fnt):
         return None
 
 def imap_helper(glyphs_fnt):
-    return collect_font_info(*glyphs_fnt)
+    try:
+        return collect_font_info(*glyphs_fnt)
+    except Exception as e:
+        print("ERROR:", e)
+        return None
 
 def collect_fonts_info(glyphs, fonts):
     pool = multiprocessing.Pool()
