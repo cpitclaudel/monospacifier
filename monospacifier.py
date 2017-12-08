@@ -194,7 +194,7 @@ def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
     familyname = "{} monospacified for {}".format(cleanup_font_name(fallback.familyname), cleanup_font_name(reference.familyname))
     fullname = "{} monospacified for {}".format(cleanup_font_name(fallback.fullname), cleanup_font_name(reference.fullname))
 
-    print "!!!", fallback.fontname, "!!!", reference.fontname, "!!!"
+    print("!!!", fallback.fontname, "!!!", reference.fontname, "!!!")
     destination = os.path.join(save_to, fontname + ".ttf")
     shutil.copy(fallback.path, destination)
     fscaler = FontScaler(destination)
