@@ -57,6 +57,22 @@ Here are two examples:
   (set-fontset-font ft 'unicode (font-spec :name "Asana Math monospacified for DejaVu Sans Mono") nil 'append))
 ```
 
+#### urxvt
+
+Fallback fonts can be used with `urxvt` using comma-separated values to the `-fn` switch:
+
+```bash
+urxvt -fn 'xft:Consolas,xft:Symbola monospacified for Consolas'
+```
+
+This can also be set in the `.Xresources` file: 
+
+```
+URxvt.font: xft:Consolas,xft:Symbola monospacified for Consolas
+```
+
+Source it by running `xrdb -merge .Xresources`. 
+
 #### Other editors
 
 Please submit recipes for other editors or operating systems!
