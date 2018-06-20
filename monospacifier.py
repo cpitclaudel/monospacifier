@@ -33,6 +33,7 @@ import math
 import os
 import re
 import shutil
+import unicodedata
 
 try:
     import fontforge
@@ -53,6 +54,12 @@ class GlyphScaler(object):
         self.cell_width = cell_width
 
     @staticmethod
+    def needs_scaling(glyph):
+        uni = glyph.unicode
+        category = unicodedata.category(unichr(uni)) if uni >= 0 else None
+        return glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']
+
+    @staticmethod
     def set_width(glyph, width):
         delta = width - glyph.width
         glyph.left_side_bearing += delta / 2
@@ -69,7 +76,7 @@ class BasicGlyphScaler(GlyphScaler):
         GlyphScaler.__init__(self, cell_width)
 
     def scale(self, glyph):
-        if glyph.width > 0:
+        if self.needs_scaling(glyph):
             GlyphScaler.set_width(glyph, self.cell_width)
 
 class AllowWideCharsGlyphScaler(GlyphScaler):
@@ -85,7 +92,7 @@ class AllowWideCharsGlyphScaler(GlyphScaler):
         self.avg_width = avg_width
 
     def scale(self, glyph):
-        if glyph.width > 0:
+        if self.needs_scaling(glyph):
             new_width_in_cells = int(math.ceil(0.75 * glyph.width / self.avg_width))
             # if new_width_in_cells > 1:
             #     print("{} is {} cells wide ({} -> {})".format(
@@ -106,7 +113,7 @@ class StretchingGlyphScaler(GlyphScaler):
         self.avg_width = avg_width
 
     def scale(self, glyph):
-        if glyph.width > 0:
+        if self.needs_scaling(glyph):
             source_cells_width = glyph.width / self.avg_width
             scale = 1.0 / (1.15 ** max(0, source_cells_width - 1))
             # if glyph.unicode == 10239:
