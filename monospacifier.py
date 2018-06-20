@@ -196,10 +196,22 @@ def plot_widths(glyphs):
 def fname(path):
     return os.path.splitext(os.path.basename(path))[0]
 
-def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
-    fontname = "{}_monospacified_for_{}".format(cleanup_font_name(fallback.fontname), cleanup_font_name(reference.fontname))
-    familyname = "{} monospacified for {}".format(cleanup_font_name(fallback.familyname), cleanup_font_name(reference.familyname))
-    fullname = "{} monospacified for {}".format(cleanup_font_name(fallback.fullname), cleanup_font_name(reference.fullname))
+def cleanup_font_name(name, renames):
+    name = re.sub('(.monospacified.for.*|-Regular|-Math)', '', name)
+    for old, new in renames:
+        name = name.replace(old, new)
+    return name
+
+def make_monospace(reference, fallback, gscaler, save_to, copy_metrics, renames):
+    fontname = "{}_monospacified_for_{}".format(
+        cleanup_font_name(fallback.fontname, renames),
+        cleanup_font_name(reference.fontname, renames))
+    familyname = "{} monospacified for {}".format(
+        cleanup_font_name(fallback.familyname, renames),
+        cleanup_font_name(reference.familyname, renames))
+    fullname = "{} monospacified for {}".format(
+        cleanup_font_name(fallback.fullname, renames),
+        cleanup_font_name(reference.fullname, renames))
 
     print("!!! {} !!! {} !!!".format(fallback.fontname, reference.fontname))
     destination = os.path.join(save_to, fontname + ".ttf")
@@ -218,13 +230,16 @@ def make_monospace(reference, fallback, gscaler, save_to, copy_metrics):
 
     return destination
 
-def cleanup_font_name(name):
-    return re.sub('(.monospacified.for.*|-Regular|-Math)', '', name)
-
-def merge_fonts(reference, fallback, save_to):
-    fontname = "{}_extended_with_{}".format(cleanup_font_name(reference.fontname), cleanup_font_name(fallback.fontname))
-    familyname = "{} extended with {}".format(cleanup_font_name(reference.familyname), cleanup_font_name(fallback.familyname))
-    fullname = "{} extended with {}".format(cleanup_font_name(reference.fullname), cleanup_font_name(fallback.fullname))
+def merge_fonts(reference, fallback, save_to, renames):
+    fontname = "{}_extended_with_{}".format(
+        cleanup_font_name(reference.fontname, renames),
+        cleanup_font_name(fallback.fontname, renames))
+    familyname = "{} extended with {}".format(
+        cleanup_font_name(reference.familyname, renames),
+        cleanup_font_name(fallback.familyname, renames))
+    fullname = "{} extended with {}".format(
+        cleanup_font_name(reference.fullname, renames),
+        cleanup_font_name(fallback.fullname, renames))
 
     destination = os.path.join(save_to, fontname + ".ttf")
     shutil.copy(reference.path, destination)
@@ -252,9 +267,11 @@ def parse_arguments():
                         help="Whether to create copies of the reference font, extended with monospacified glyphs of the inputs.")
     parser.add_argument('--copy-metrics', action='store_const', const=True, default=False,
                         help="Whether to apply the metrics of the reference font to the new font.")
+    parser.add_argument('--rename', nargs=2, metavar=("FROM", "TO"), action="append",
+                        help="Replacement to perform in font names (repeat to perform multiple renames)")
     return parser.parse_args()
 
-def process_fonts(ref_paths, fnt_paths, save_to, merge, copy_metrics):
+def process_fonts(ref_paths, fnt_paths, save_to, merge, copy_metrics, renames):
     for ref in ref_paths:
         reference = fontforge.open(ref)
         ref_width = FontScaler.most_common_width(reference)
@@ -263,18 +280,18 @@ def process_fonts(ref_paths, fnt_paths, save_to, merge, copy_metrics):
             fallback = fontforge.open(fnt)
             print(">>> - Monospacifying {}".format(fallback.familyname))
             gscaler = StretchingGlyphScaler(ref_width, FontScaler.average_width(fallback))
-            path = make_monospace(reference, fallback, gscaler, save_to, copy_metrics)
+            path = make_monospace(reference, fallback, gscaler, save_to, copy_metrics, renames)
             if merge:
                 monospacified = fontforge.open(path)
                 print(">>> - Merging with {}".format(monospacified.familyname))
-                path = merge_fonts(reference, monospacified, save_to)
+                path = merge_fonts(reference, monospacified, save_to, renames)
             yield (reference.familyname, fallback.familyname, path)
 
 def main():
     args = parse_arguments()
-    # del args.inputs[1:]
-    # del args.references[1:]
-    results = list(process_fonts(args.references, args.inputs, args.save_to, args.merge, args.copy_metrics))
+    results = list(process_fonts(args.references, args.inputs,
+                                 args.save_to, args.merge,
+                                 args.copy_metrics, args.rename))
 
     tabdata = {}
     for ref, fnt, ttf in results:

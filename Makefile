@@ -25,7 +25,8 @@ ttf: monospacifier.py
 	./monospacifier.py \
 		--references ./sources/references/* \
 		--inputs ./sources/inputs/* \
-		--font-rename-map font-rename-map
+		--rename Asana Asanb \
+        --rename STIX STIY \
 		--save-to ./fonts --copy-metrics # 2>&1 # --merge
 
 prepare:
