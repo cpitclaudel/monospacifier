@@ -1,6 +1,6 @@
 DEJAVU=/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
 UBUNTU=/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-R.ttf
-CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
+# CONSOLAS=/home/clement/.fonts/Microsoft/Consolas-Fixed.ttf
 INCONSOLATA=/home/clement/.fonts/monospace/Inconsolata.otf
 INCONSOLATA_LGC=/home/clement/.fonts/monospace/inconsolata-lgc/Inconsolata LGC for Powerline.ttf
 TERMINUS=/home/clement/.fonts/monospace/terminus/TerminusTTF-4.39.ttf
@@ -25,12 +25,12 @@ ttf: monospacifier.py
 	./monospacifier.py \
 		--references ./sources/references/* \
 		--inputs ./sources/inputs/* \
+		--font-rename-map font-rename-map
 		--save-to ./fonts --copy-metrics # 2>&1 # --merge
 
 prepare:
 	echo "References"
 	rm ./sources/references/*
-	cp "$(CONSOLAS)"				./sources/references/Consolas.ttf
 	cp "$(UBUNTU)"					./sources/references/UbuntuMono.ttf
 	cp "$(DEJAVU)"					./sources/references/DejaVuSansMono.ttf
 	cp "$(INCONSOLATA)"				./sources/references/Inconsolata.ttf
@@ -47,6 +47,7 @@ prepare:
 	cp "$(LATINMODERN)"				./sources/inputs/LatinModernMath.otf
 	cp "$(TEXGYRESCHOLA)"			./sources/inputs/TexGyreScholaMath.otf
 	cp "$(FREESERIF)"				./sources/inputs/FreeSerif.ttf
+#	cp "$(CONSOLAS)"				./sources/references/Consolas.ttf
 #   cp "$(DEJAVUSANS)"				./sources/inputs/DejaVuSans.ttf
 #   cp "$(DEJAVUSANSCONDENSED)"		./sources/inputs/DejaVuSansCondensed.ttf
 #   cp "$(DEJAVUSERIF)"				./sources/inputs/DejaVuSerif.ttf
