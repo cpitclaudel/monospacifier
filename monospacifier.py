@@ -241,10 +241,10 @@ def merge_fonts(reference, fallback, save_to):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--references', required="True", nargs='+',
+    parser.add_argument('--references', required=True, nargs='+',
                         help="Reference monospace fonts. " +
                         "The metrics (character width, ...) of the newly created monospace fonts are inherited from these.")
-    parser.add_argument('--inputs', required="True", nargs='+',
+    parser.add_argument('--inputs', required=True, nargs='+',
                         help="Variable-width fonts to monospacify.")
     parser.add_argument('--save-to', default=".",
                         help="Where to save the newly generated monospace fonts. Defaults to current directory.")
