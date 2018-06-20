@@ -56,6 +56,8 @@ def charmap(chars, width=80):
 def compare(f1, f2):
     gl1, gl2 = set(supported_chars(f1)), set(supported_chars(f2))
     only1, only2 = (sorted(gl1 - gl2), sorted(gl2 - gl1))
+    # print("{} has {} glyphs".format(f1, len(gl1)))
+    # print("{} has {} glyphs".format(f2, len(gl2)))
     print("\n# Only in {}:".format(f1))
     print("\n".join(charmap(only1)))
     print("\n# Only in {}:".format(f2))
