@@ -5,6 +5,7 @@ INCONSOLATA_LGC=/home/clement/.fonts/monospace/inconsolata-lgc/Inconsolata LGC f
 TERMINUS=/home/clement/.fonts/monospace/terminus/TerminusTTF-4.39.ttf
 MONONOKI=/home/clement/.fonts/monospace/mononoki/mononoki-Regular.ttf
 LIBERATION=/home/clement/.fonts/monospace/liberation/LiberationMono-Regular.ttf
+SOURCE_CODE_PRO=/home/clement/.fonts/monospace/source-code-pro/SourceCodePro-Regular.ttf
 
 XITS=/home/clement/.fonts/maths/xits-math.otf
 XITS_BOLD=/home/clement/.fonts/maths/xits-mathbold.otf
@@ -34,6 +35,7 @@ prepare:
 	cp "$(TERMINUS)"				./sources/references/Terminus.ttf
 	cp "$(MONONOKI)"				./sources/references/Mononoki.ttf
 	cp "$(LIBERATION)"				./sources/references/Liberation.ttf
+	cp "$(SOURCE_CODE_PRO)"			./sources/references/SourceCodePro.ttf
 	echo "Inputs"
 	rm								./sources/inputs/*
 	cp "$(XITS)"					./sources/inputs/XITSMath.otf

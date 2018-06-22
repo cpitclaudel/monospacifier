@@ -159,7 +159,7 @@ Ubuntu Mono: Custom license
 https://www.ubuntu.com/legal/terms-and-policies/font-licence
 | see licenses/ubuntu-font-licence-1.0.txt
 
-Liberation Mono: OFL with reserved name Liberation
+Liberation Mono: OFL with reserved name "Liberation"
 https://pagure.io/liberation-fonts
 | Digitized data copyright (c) 2010 Google Corporation
 | 	with Reserved Font Arimo, Tinos and Cousine.
@@ -168,6 +168,17 @@ https://pagure.io/liberation-fonts
 |
 | This Font Software is licensed under the SIL Open Font License,
 | Version 1.1.
+|
+| This license is copied below, and is also available with a FAQ at:
+| http://scripts.sil.org/OFL
+
+Source Code Pro: OFL with reserved name "Source"
+https://github.com/adobe-fonts/source-code-pro
+| Copyright 2010, 2012 Adobe Systems Incorporated (http://www.adobe.com/), with
+| Reserved Font Name 'Source'. All Rights Reserved. Source is a trademark of Adobe
+| Systems Incorporated in the United States and/or other countries.
+|
+| This Font Software is licensed under the SIL Open Font License, Version 1.1.
 |
 | This license is copied below, and is also available with a FAQ at:
 | http://scripts.sil.org/OFL
