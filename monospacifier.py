@@ -34,6 +34,7 @@ import os
 import re
 import shutil
 import unicodedata
+import sys
 
 try:
     import fontforge
@@ -61,7 +62,7 @@ class GlyphScaler(object):
     @staticmethod
     def needs_scaling(glyph):
         uni = glyph.unicode
-        category = unicodedata.category(_unichr(uni)) if uni >= 0 else None
+        category = unicodedata.category(_unichr(uni)) if 0 <= uni <= sys.maxunicode else None
         return glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']
 
     @staticmethod
