@@ -56,7 +56,7 @@ class GlyphScaler(object):
     @staticmethod
     def needs_scaling(glyph):
         uni = glyph.unicode
-        category = unicodedata.category(unichr(uni)) if uni >= 0 else None
+        category = unicodedata.category(unichr(uni)) if (uni >= 0) and (uni <= sys.maxunicode) else None
         return glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']
 
     @staticmethod
