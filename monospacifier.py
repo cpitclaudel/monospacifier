@@ -267,7 +267,7 @@ def parse_arguments():
                         help="Whether to create copies of the reference font, extended with monospacified glyphs of the inputs.")
     parser.add_argument('--copy-metrics', action='store_const', const=True, default=False,
                         help="Whether to apply the metrics of the reference font to the new font.")
-    parser.add_argument('--rename', nargs=2, metavar=("FROM", "TO"), action="append",
+    parser.add_argument('--rename', nargs=2, metavar=("FROM", "TO"), default=[], action="append",
                         help="Replacement to perform in font names (repeat to perform multiple renames)")
     return parser.parse_args()
 
