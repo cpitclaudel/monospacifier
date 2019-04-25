@@ -49,6 +49,11 @@ except ImportError:
     print("  sudo ldconfig")
     raise
 
+try:
+    _unichr = unichr
+except NameError:
+    _unichr = chr
+
 class GlyphScaler(object):
     def __init__(self, cell_width):
         self.cell_width = cell_width
@@ -56,7 +61,7 @@ class GlyphScaler(object):
     @staticmethod
     def needs_scaling(glyph):
         uni = glyph.unicode
-        category = unicodedata.category(unichr(uni)) if uni >= 0 else None
+        category = unicodedata.category(_unichr(uni)) if uni >= 0 else None
         return glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']
 
     @staticmethod
