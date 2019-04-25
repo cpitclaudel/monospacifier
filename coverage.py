@@ -47,7 +47,7 @@ def parse_arguments():
 class FontInfo(object):
     def __init__(self, path, glyphs):
         """Check for unicode GLYPHS in font at PATH"""
-        font = fontforge.open(os.path.abspath(path))
+        font = fontforge.open(os.path.abspath(path).decode("utf-8"))
         self.path = path
         self.glyphs = glyphs
         self.fontname = font.fontname
@@ -75,15 +75,21 @@ def collect_font_info(glyphs, fnt):
         return None
 
 def imap_helper(glyphs_fnt):
-    try:
-        return collect_font_info(*glyphs_fnt)
-    except Exception as e:
-        print("ERROR:", e)
-        return None
+    # try:
+    return collect_font_info(*glyphs_fnt)
+    # except Exception as e:
+        # print("ERROR:", e)
+        # return None
+
+PARALLEL = False
 
 def collect_fonts_info(glyphs, fonts):
-    pool = multiprocessing.Pool()
-    for idx, info in enumerate(pool.imap_unordered(imap_helper, izip(repeat(glyphs), fonts))):
+    if PARALLEL:
+        pool = multiprocessing.Pool()
+        infos = pool.imap_unordered(imap_helper, izip(repeat(glyphs), fonts))
+    else:
+        infos = (imap_helper((glyphs, fnt)) for fnt in fonts)
+    for idx, info in enumerate(infos):
         print(">>> {} <<<".format(idx))
         if info:
             yield info
@@ -91,7 +97,6 @@ def collect_fonts_info(glyphs, fonts):
 def main():
     args = parse_arguments()
     args.glyphs = [g.decode("utf-8") for g in args.glyphs]
-
     infos = list(collect_fonts_info(args.glyphs, args.fonts))
     infos.sort(key=lambda info: len(info.supported))
 
