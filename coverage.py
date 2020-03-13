@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=too-few-public-methods
 
@@ -19,7 +19,7 @@
 Example use: ./coverage.py --glyphs ω --fonts `find ~/.fonts -name '*.*tf'`"""
 
 import argparse
-from itertools import izip, repeat
+from itertools import repeat
 import multiprocessing
 import os
 
@@ -30,10 +30,11 @@ except ImportError:
     print("This program requires FontForge's python bindings:")
     print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
-    print("  ./bootstrap")
-    print("  ./configure")
-    print("  make -j8")
-    print("  sudo make install")
+    print("  mkdir build; cd build")
+    print("  cmake -GNinja .. -Wno-dev")
+    print("  ninja")
+    print("  sudo ninja install")
+    print("  sudo ldconfig")
     raise
 
 def parse_arguments():
@@ -86,7 +87,7 @@ PARALLEL = False
 def collect_fonts_info(glyphs, fonts):
     if PARALLEL:
         pool = multiprocessing.Pool()
-        infos = pool.imap_unordered(imap_helper, izip(repeat(glyphs), fonts))
+        infos = pool.imap_unordered(imap_helper, zip(repeat(glyphs), fonts))
     else:
         infos = (imap_helper((glyphs, fnt)) for fnt in fonts)
     for idx, info in enumerate(infos):
@@ -107,5 +108,5 @@ if __name__ == '__main__':
     main()
 
 # Local Variables:
-# python-shell-interpreter: "python2"
+# python-shell-interpreter: "python3"
 # End:

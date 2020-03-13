@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=too-few-public-methods
 
@@ -19,19 +19,18 @@
 Example use: ./allchars.py test.ttf`"""
 
 import sys
-import os
 
 try:
     import fontforge
-    import psMat
 except ImportError:
     print("This program requires FontForge's python bindings:")
     print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
-    print("  ./bootstrap")
-    print("  ./configure")
-    print("  make -j8")
-    print("  sudo make install")
+    print("  mkdir build; cd build")
+    print("  cmake -GNinja .. -Wno-dev")
+    print("  ninja")
+    print("  sudo ninja install")
+    print("  sudo ldconfig")
     raise
 
 def supported_chars(path):
@@ -39,7 +38,7 @@ def supported_chars(path):
     try:
         for glyph in ft.glyphs():
             if glyph.unicode >= 0:
-                yield unichr(glyph.unicode)
+                yield chr(glyph.unicode)
     finally:
         ft.close()
 
@@ -75,5 +74,5 @@ if __name__ == '__main__':
     main()
 
 # Local Variables:
-# python-shell-interpreter: "python2"
+# python-shell-interpreter: "python3"
 # End:

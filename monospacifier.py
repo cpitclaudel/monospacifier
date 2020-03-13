@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=too-few-public-methods
 
@@ -43,26 +43,21 @@ except ImportError:
     print("This program requires FontForge's python bindings:")
     print("  git clone https://github.com/fontforge/fontforge")
     print("  cd fontforge")
-    print("  ./bootstrap")
-    print("  ./configure")
-    print("  make -j8")
-    print("  sudo make install")
+    print("  mkdir build; cd build")
+    print("  cmake -GNinja .. -Wno-dev")
+    print("  ninja")
+    print("  sudo ninja install")
     print("  sudo ldconfig")
     raise
 
-try:
-    _unichr = unichr
-except NameError:
-    _unichr = chr
-
-class GlyphScaler(object):
+class GlyphScaler:
     def __init__(self, cell_width):
         self.cell_width = cell_width
 
     @staticmethod
     def needs_scaling(glyph):
         uni = glyph.unicode
-        category = unicodedata.category(_unichr(uni)) if 0 <= uni <= sys.maxunicode else None
+        category = unicodedata.category(chr(uni)) if 0 <= uni <= sys.maxunicode else None
         return glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']
 
     @staticmethod
@@ -128,7 +123,7 @@ class StretchingGlyphScaler(GlyphScaler):
             glyph.transform(matrix)
             GlyphScaler.set_width(glyph, self.cell_width)
 
-class FontScaler(object):
+class FontScaler:
     METRICS = ["ascent", "descent", "hhea_ascent", "hhea_ascent_add",
                "hhea_descent", "hhea_descent_add", "hhea_linegap", "os2_capheight",
                "os2_strikeypos", "os2_strikeysize", "os2_subxoff", "os2_subxsize",
@@ -314,5 +309,5 @@ if __name__ == '__main__':
     main()
 
 # Local Variables:
-# python-shell-interpreter: "python2"
+# python-shell-interpreter: "python3"
 # End:
