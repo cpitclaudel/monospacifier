@@ -48,7 +48,7 @@ def parse_arguments():
 class FontInfo(object):
     def __init__(self, path, glyphs):
         """Check for unicode GLYPHS in font at PATH"""
-        font = fontforge.open(os.path.abspath(path).decode("utf-8"))
+        font = fontforge.open(os.path.abspath(path))
         self.path = path
         self.glyphs = glyphs
         self.fontname = font.fontname
@@ -97,7 +97,6 @@ def collect_fonts_info(glyphs, fonts):
 
 def main():
     args = parse_arguments()
-    args.glyphs = [g.decode("utf-8") for g in args.glyphs]
     infos = list(collect_fonts_info(args.glyphs, args.fonts))
     infos.sort(key=lambda info: len(info.supported))
 
