@@ -63,8 +63,8 @@ class GlyphScaler:
     @staticmethod
     def set_width(glyph, width):
         delta = width - glyph.width
-        glyph.left_side_bearing += delta / 2
-        glyph.right_side_bearing += delta - glyph.left_side_bearing
+        glyph.left_side_bearing += math.ceil(delta / 2)
+        glyph.right_side_bearing += math.ceil(delta - glyph.left_side_bearing)
         glyph.width = width
 
 class BasicGlyphScaler(GlyphScaler):
