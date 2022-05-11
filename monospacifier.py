@@ -62,6 +62,8 @@ class GlyphScaler:
 
     @staticmethod
     def set_width(glyph, width):
+        uni = glyph.unicode
+        width *= (1 + math.floor(math.log(uni, 256))) if 0 <= uni <= sys.maxunicode else (1)
         delta = width - glyph.width
         glyph.left_side_bearing += delta / 2
         glyph.right_side_bearing += delta - glyph.left_side_bearing
