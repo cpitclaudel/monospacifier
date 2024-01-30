@@ -168,9 +168,9 @@ class FontScaler:
         Adjust width of glyphs in using SCALER.
         """
         # counter = Counter()
-        sorted_glyphs = [ v for v in self.font.glyphs() if v ]
-        sorted_glyphs.sort(key=lambda g: bool(g.references)) # modify glyphs with references after simple ones
-        for glyph in sorted_glyphs:
+        for glyph in self.font.glyphs():
+            glyph.unlinkRef()
+        for glyph in self.font.glyphs():
             scaler.scale(glyph)
             # counter[glyph.width] += 1
         # print("> Final width distribution: {}".format(", ".join(map(str, counter.most_common(10)))))
