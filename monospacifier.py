@@ -63,8 +63,8 @@ class GlyphScaler:
     @staticmethod
     def set_width(glyph, width):
         delta = width - glyph.width
-        glyph.left_side_bearing += delta / 2
-        glyph.right_side_bearing += delta - glyph.left_side_bearing
+        glyph.left_side_bearing = round(glyph.left_side_bearing + delta / 2)
+        # right_size_bearing will be automatically adjusted by Fontforge when width is changed
         glyph.width = width
 
 class BasicGlyphScaler(GlyphScaler):
@@ -168,7 +168,9 @@ class FontScaler:
         Adjust width of glyphs in using SCALER.
         """
         # counter = Counter()
-        for glyph in self.font.glyphs():
+        sorted_glyphs = [ v for v in self.font.glyphs() if v ]
+        sorted_glyphs.sort(key=lambda g: bool(g.references)) # modify glyphs with references after simple ones
+        for glyph in sorted_glyphs:
             scaler.scale(glyph)
             # counter[glyph.width] += 1
         # print("> Final width distribution: {}".format(", ".join(map(str, counter.most_common(10)))))
